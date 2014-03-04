@@ -1,10 +1,38 @@
 FROM tianon/centos:6.5
 MAINTAINER Hiroaki Nakamura <hnakamur@gmail.com>
 
-RUN yum update -y && \
-    rpm --import http://nginx.org/keys/nginx_signing.key && \
-    yum install -y http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm && \
-    yum install -y nginx
+RUN yum update -y
+
+# install LuaJIT
+RUN yum install -y curl tar make gcc && \
+    cd /usr/local/src && \
+    curl -O http://luajit.org/download/LuaJIT-2.0.2.tar.gz && \
+    tar xf LuaJIT-2.0.2.tar.gz && \
+    cd LuaJIT-2.0.2 && \
+    make && \
+    make PREFIX=/usr/local/luajit install
+
+# install nginx with lua-nginx-module
+RUN yum install -y git curl tar bzip2 make gcc-c++ zlib-devel && \
+    export LUAJIT_LIB=/usr/local/luajit/lib && \
+    export LUAJIT_INC=/usr/local/luajit/include/luajit-2.0 && \
+    cd /usr/local/src && \
+    git clone git://github.com/simpl/ngx_devel_kit.git && \
+    git clone git://github.com/chaoslawful/lua-nginx-module.git && \
+    curl -LO http://downloads.sourceforge.net/project/pcre/pcre/8.34/pcre-8.34.tar.bz2 && \
+    tar xf pcre-8.34.tar.bz2 && \
+    curl -O http://nginx.org/download/nginx-1.4.5.tar.gz && \
+    tar xf nginx-1.4.5.tar.gz && \
+    cd nginx-1.4.5 && \
+    ./configure --prefix=/usr/local/nginx \
+      --with-pcre=/usr/local/src/pcre-8.34 \
+      --add-module=/usr/local/src/ngx_devel_kit \
+      --add-module=/usr/local/src/lua-nginx-module \
+      --with-ld-opt="-Wl,-rpath,$LUAJIT_LIB" && \
+    make && \
+    make install
+
+ADD nginx.conf /usr/local/nginx/conf/nginx.conf
 
 EXPOSE 80
-ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
