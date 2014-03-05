@@ -32,6 +32,15 @@ RUN yum install -y git curl tar bzip2 make gcc-c++ zlib-devel && \
     make && \
     make install
 
+# install lua-resty-redis
+RUN yum install -y git make gcc && \
+    cd /usr/local/src && \
+    git clone git://github.com/agentzh/lua-resty-redis.git && \
+    cd lua-resty-redis && \
+    git checkout -b v0.19 v0.19 && \
+    install -d /usr/local/lib/lua/resty && \
+    install -t /usr/local/lib/lua/resty lib/resty/redis.lua
+
 ADD nginx.conf /usr/local/nginx/conf/nginx.conf
 
 EXPOSE 80
