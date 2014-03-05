@@ -35,4 +35,4 @@ RUN yum install -y git curl tar bzip2 make gcc-c++ zlib-devel && \
 ADD nginx.conf /usr/local/nginx/conf/nginx.conf
 
 EXPOSE 80
-ENTRYPOINT ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
+CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
