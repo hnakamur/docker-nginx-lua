@@ -1,7 +1,8 @@
 FROM tianon/centos:6.5
 MAINTAINER Hiroaki Nakamura <hnakamur@gmail.com>
 
-RUN yum update -y
+RUN cp -p /usr/share/zoneinfo/Japan /etc/localtime && \
+    yum update -y
 
 # install LuaJIT
 RUN yum install -y curl tar make gcc && \
