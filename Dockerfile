@@ -45,6 +45,7 @@ RUN yum install -y git make gcc && \
 ADD conf/ /usr/local/nginx/conf/
 ADD public_html/ /usr/local/var/www/public_html/
 ADD private_html/ /usr/local/var/www/private_html/
+ADD start.sh /usr/local/sbin/start.sh
 
 EXPOSE 80
-CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
+CMD ["/bin/sh", "/usr/local/sbin/start.sh"]
