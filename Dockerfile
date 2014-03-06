@@ -42,7 +42,7 @@ RUN yum install -y git make gcc && \
     install -d /usr/local/lib/lua/resty && \
     install -t /usr/local/lib/lua/resty lib/resty/redis.lua
 
-ADD nginx.conf /usr/local/nginx/conf/nginx.conf
+ADD conf/ /usr/local/nginx/conf/
 ADD public_html/ /usr/local/var/www/public_html/
 ADD private_html/ /usr/local/var/www/private_html/
 
