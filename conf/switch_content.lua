@@ -8,6 +8,7 @@ function contained(comma_list_str, str)
 end
 
 local granted = false
+local deleted = false
 local session_id = ngx.var.cookie_inter_app_session
 if (session_id ~= nil) then
   local redis = require "resty.redis"
@@ -28,6 +29,9 @@ if (session_id ~= nil) then
       ngx.header["X-Debug-op"] = { 'op=' .. op }
       if contained(tasks, task_id) then
         granted = true
+        if op == 'delete' then
+          deleted = true
+        end
       end
     end
   end
@@ -44,7 +48,11 @@ end
 
 ngx.header["X-Debug-granted"] = { string.format('granted=%s', granted) }
 if granted then
-  ngx.exec("@private")
+  if deleted then
+    ngx.exec("@deleted")
+  else
+    ngx.exec("@private")
+  end
 else
   ngx.exec("@public")
 end
