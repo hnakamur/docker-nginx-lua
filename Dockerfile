@@ -20,13 +20,13 @@ RUN yum install -y git curl tar bzip2 make gcc-c++ zlib-devel && \
     cd /usr/local/src && \
     git clone git://github.com/simpl/ngx_devel_kit.git && \
     git clone git://github.com/chaoslawful/lua-nginx-module.git && \
-    curl -LO http://downloads.sourceforge.net/project/pcre/pcre/8.34/pcre-8.34.tar.bz2 && \
-    tar xf pcre-8.34.tar.bz2 && \
+    curl -LO http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.bz2 && \
+    tar xf pcre-8.35.tar.bz2 && \
     curl -O http://nginx.org/download/nginx-1.4.7.tar.gz && \
     tar xf nginx-1.4.7.tar.gz && \
     cd nginx-1.4.7 && \
     ./configure --prefix=/usr/local/nginx \
-      --with-pcre=/usr/local/src/pcre-8.34 \
+      --with-pcre=/usr/local/src/pcre-8.35 \
       --add-module=/usr/local/src/ngx_devel_kit \
       --add-module=/usr/local/src/lua-nginx-module \
       --with-ld-opt="-Wl,-rpath,$LUAJIT_LIB" && \
