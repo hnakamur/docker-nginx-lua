@@ -38,7 +38,7 @@ RUN yum install -y git make gcc && \
     cd /usr/local/src && \
     git clone git://github.com/agentzh/lua-resty-redis.git && \
     cd lua-resty-redis && \
-    git checkout -b v0.19 v0.19 && \
+    git checkout -b v0.20 v0.20 && \
     install -d /usr/local/lib/lua/resty && \
     install -t /usr/local/lib/lua/resty lib/resty/redis.lua
 
