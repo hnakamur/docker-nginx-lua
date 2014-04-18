@@ -7,9 +7,9 @@ RUN cp -p /usr/share/zoneinfo/Japan /etc/localtime && \
 # install LuaJIT
 RUN yum install -y curl tar make gcc && \
     cd /usr/local/src && \
-    curl -O http://luajit.org/download/LuaJIT-2.0.2.tar.gz && \
-    tar xf LuaJIT-2.0.2.tar.gz && \
-    cd LuaJIT-2.0.2 && \
+    curl -O http://luajit.org/download/LuaJIT-2.0.3.tar.gz && \
+    tar xf LuaJIT-2.0.3.tar.gz && \
+    cd LuaJIT-2.0.3 && \
     make && \
     make PREFIX=/usr/local/luajit install
 
